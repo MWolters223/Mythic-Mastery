@@ -42,8 +42,15 @@ public class PlayerModel : MonoBehaviour
     {
         Debug.Log("GodController Start on " + gameObject.name);
 
-        rb = GetComponent<Rigidbody>();
+        InitializeComponents();
+        InitializeTransforms();
+        InitializeLayerMasks();
+        InitializeLineRenderer();
+    }
 
+    private void InitializeComponents()
+    {
+        rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
             Debug.LogError("God has no rigidbody, please add it");
@@ -53,13 +60,21 @@ public class PlayerModel : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
 
-        BoxCollider collider = GetComponent<BoxCollider>();
-        if (collider == null)
+        if (GetComponent<BoxCollider>() == null)
         {
             Debug.LogError("God has no box collider, please add it");
         }
 
         transform.localScale = new Vector3(2, 2, 2);
+    }
+
+    private void InitializeTransforms()
+    {
+        if (godPrefab == null)
+        {
+            Debug.LogError("God prefab not assigned.");
+            return;
+        }
 
         statueTransform = godPrefab.transform.Find("standbeeld");
         diskTransform = godPrefab.transform.Find("grondplaat");
@@ -68,53 +83,44 @@ public class PlayerModel : MonoBehaviour
         {
             Debug.LogError("Standbeeld part not found in the god prefab.");
         }
+
         if (diskTransform == null)
         {
             Debug.LogError("Grondplaat part not found in the god prefab.");
         }
+    }
 
-        int groundLayerIndex = LayerMask.NameToLayer("Ground");
-        if (groundLayerIndex == -1)
-        {
-            Debug.LogError("Layer 'Ground' not found.");
-        }
-        else
-        {
-            groundMask = 1 << groundLayerIndex;
-        }
+    private void InitializeLayerMasks()
+    {
+        groundMask = GetLayerMask("Ground");
+        obstacleMask = GetLayerMask("Obstacle");
+        enemyMask = GetLayerMask("Enemy");
+    }
 
-        int obstacleLayerIndex = LayerMask.NameToLayer("Obstacle");
-        if (obstacleLayerIndex == -1)
+    private LayerMask GetLayerMask(string layerName)
+    {
+        int layerIndex = LayerMask.NameToLayer(layerName);
+        if (layerIndex == -1)
         {
-            Debug.LogError("Layer 'Obstacle' not found.");
+            Debug.LogError($"Layer '{layerName}' not found.");
+            return 0;
         }
-        else
-        {
-            obstacleMask = 1 << obstacleLayerIndex;
-        }
+        return 1 << layerIndex;
+    }
 
-        int enemyLayerIndex = LayerMask.NameToLayer("Enemy");
-        if (enemyLayerIndex == -1)
-        {
-            Debug.LogError("Layer 'Enemy' not found.");
-        }
-        else
-        {
-            enemyMask = 1 << enemyLayerIndex;
-        }
-
+    private void InitializeLineRenderer()
+    {
         GameObject lineRendererObject = GameObject.Find("Line");
         if (lineRendererObject == null)
         {
-            Debug.LogError("GameObject Line not found in scene, please add it.");
+            Debug.LogError("GameObject 'Line' not found in scene, please add it.");
+            return;
         }
-        else
+
+        lineRenderer = lineRendererObject.GetComponent<LineRenderer>();
+        if (lineRenderer == null)
         {
-            lineRenderer = lineRendererObject.GetComponent<LineRenderer>();
-            if (lineRenderer == null)
-            {
-                Debug.LogError("No LineRenderer component found on Line.");
-            }
+            Debug.LogError("No LineRenderer component found on 'Line'.");
         }
     }
 }

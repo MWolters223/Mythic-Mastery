@@ -4,25 +4,24 @@ public class PlayerView : MonoBehaviour
 {
     public Transform StatueTransform { get; private set; }
     public Transform DiskTransform { get; private set; }
-    public LineRenderer LineRenderer { get; private set; }
+    private LineRenderer lineRenderer;
 
     public void Initialize(Transform statueTransform, Transform diskTransform, LineRenderer lineRenderer)
     {
         StatueTransform = statueTransform;
         DiskTransform = diskTransform;
-        LineRenderer = lineRenderer;
+        this.lineRenderer = lineRenderer;
     }
 
-    public void UpdateLaser(Vector3 startPosition, Vector3 endPosition)
+    public void Move(Vector3 position, Quaternion rotation)
     {
-        LineRenderer.positionCount = 2;
-        LineRenderer.SetPosition(0, startPosition);
-        LineRenderer.SetPosition(1, endPosition);
+        transform.position = position;
+        transform.rotation = rotation;
     }
 
-    public void DisableLaser()
+    public void SetVelocity(Vector3 velocity)
     {
-        LineRenderer.positionCount = 0;
+        GetComponent<Rigidbody>().velocity = velocity;
     }
 
     public void RotateStatue(Vector3 point, Vector3 axis, float angle)
@@ -30,36 +29,21 @@ public class PlayerView : MonoBehaviour
         StatueTransform.RotateAround(point, axis, angle);
     }
 
+    public void UpdateLaser(Vector3 start, Vector3 end)
+    {
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+        lineRenderer.enabled = true;
+    }
+
+    public void DisableLaser()
+    {
+        lineRenderer.enabled = false;
+    }
+
     public void SetPosition(Vector3 position)
     {
         transform.position = position;
-    }
-
-    public void SetVelocity(Vector3 velocity)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.velocity = velocity;
-        }
-    }
-
-    public void SetRotation(Quaternion rotation)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.rotation = rotation;
-        }
-    }
-
-    public void Move(Vector3 position, Quaternion rotation)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.MovePosition(position);
-            rb.MoveRotation(rotation);
-        }
     }
 }

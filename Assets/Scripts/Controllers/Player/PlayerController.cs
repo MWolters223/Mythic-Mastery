@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerView), typeof(Rigidbody), typeof(BoxCollider))]
 public class PlayerController : MonoBehaviour
 {
     public GameObject godPrefab;
@@ -9,41 +7,36 @@ public class PlayerController : MonoBehaviour
 
     private PlayerModel model;
     private PlayerView view;
-    private PlayerInputHandler inputHandler;
-    private PlayerMovementHandler movementHandler;
-    private PlayerShootingHandler shootingHandler;
-    private PlayerCollisionHandler collisionHandler;
-
-    private Rigidbody rb;
-    private BoxCollider collider;
+    private PlayerInputController inputController;
+    private PlayerMovementController movementController;
+    private PlayerShootingController shootingController;
+    private PlayerCollisionController collisionController;
 
     private float cooldownTimer;
-
-    private LayerMask groundMask;
-    private LayerMask obstacleMask;
-    private LayerMask enemyMask;
 
     void Start()
     {
         model = new PlayerModel();
         view = GetComponent<PlayerView>();
-        inputHandler = gameObject.AddComponent<PlayerInputHandler>();
-        movementHandler = gameObject.AddComponent<PlayerMovementHandler>();
-        shootingHandler = gameObject.AddComponent<PlayerShootingHandler>();
-        collisionHandler = gameObject.AddComponent<PlayerCollisionHandler>();
+        inputController = gameObject.AddComponent<PlayerInputController>(); 
+        movementController = gameObject.AddComponent<PlayerMovementController>();
+        shootingController = gameObject.AddComponent<PlayerShootingController>();
+        collisionController = gameObject.AddComponent<PlayerCollisionController>();
 
-        rb = GetComponent<Rigidbody>();
-        collider = GetComponent<BoxCollider>();
+        movementController.Initialize(model, view, GetComponent<Rigidbody>());
+        shootingController.Initialize(model, view, projectilePrefab);
+        collisionController.Initialize(model, view);
 
-        if (rb == null || collider == null)
+        InitializeView();
+    }
+
+    private void InitializeView()
+    {
+        if (!godPrefab || !projectilePrefab)
         {
-            Debug.LogError("PlayerController: Rigidbody or BoxCollider component is missing.");
+            Debug.LogError("PlayerController: GodPrefab or ProjectilePrefab is not assigned.");
             return;
         }
-
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-
-        transform.localScale = new Vector3(2, 2, 2);
 
         Transform statueTransform = godPrefab.transform.Find("standbeeld");
         Transform diskTransform = godPrefab.transform.Find("grondplaat");
@@ -62,29 +55,21 @@ public class PlayerController : MonoBehaviour
         }
 
         view.Initialize(statueTransform, diskTransform, lineRenderer);
-
-        groundMask = LayerMask.GetMask("Ground");
-        obstacleMask = LayerMask.GetMask("Obstacle");
-        enemyMask = LayerMask.GetMask("Enemy");
-
-        movementHandler.Initialize(model, view, rb);
-        shootingHandler.Initialize(model, view, projectilePrefab); // Pass projectilePrefab
-        collisionHandler.Initialize(model, view);
     }
 
     void FixedUpdate()
     {
-        Vector2 movementInput = inputHandler.GetMovementInput();
-        movementHandler.HandleMovement(movementInput);
-        collisionHandler.PreventSfinxCollision();
+        Vector2 movementInput = inputController.GetMovementInput();
+        movementController.HandleMovement(movementInput);
+        collisionController.PreventSfinxCollision();
     }
 
     void Update()
     {
-        Vector3 mouseDirection = inputHandler.GetMouseDirection(view.transform, groundMask);
-        if (inputHandler.IsShooting() && cooldownTimer <= 0)
+        Vector3 mouseDirection = inputController.GetMouseDirection(view.transform, LayerMask.GetMask("Ground"));
+        if (inputController.IsShooting() && cooldownTimer <= 0)
         {
-            shootingHandler.HandleShooting(mouseDirection);
+            shootingController.HandleShooting(mouseDirection);
             cooldownTimer = model.shootingCooldown;
         }
 
@@ -116,7 +101,7 @@ public class PlayerController : MonoBehaviour
     private void SetLaserPosition(Vector3 direction)
     {
         Ray ray = new Ray(transform.position, direction);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundMask | obstacleMask | enemyMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground", "Obstacle", "Enemy")))
         {
             view.UpdateLaser(transform.position + new Vector3(0, model.shootingHeight, 0), hit.point + new Vector3(0, model.shootingHeight, 0));
         }

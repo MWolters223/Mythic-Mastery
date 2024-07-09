@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovementHandler : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
     private PlayerModel model;
     private PlayerView view;
@@ -13,12 +13,12 @@ public class PlayerMovementHandler : MonoBehaviour
         this.rb = rb;
     }
 
-    public void HandleMovement(Vector2 input)
+    public void HandleMovement(Vector2 movementInput)
     {
-        if (input.x != 0 || input.y != 0)
+        if (movementInput != Vector2.zero)
         {
-            Vector3 movement = view.transform.forward * input.y * model.speed * Time.deltaTime;
-            Quaternion rotation = Quaternion.Euler(Vector3.up * input.x * model.rotationSpeed * Time.deltaTime);
+            Vector3 movement = transform.forward * movementInput.y * model.speed * Time.deltaTime;
+            Quaternion rotation = Quaternion.Euler(Vector3.up * movementInput.x * model.rotationSpeed * Time.deltaTime);
             view.Move(rb.position + movement, rb.rotation * rotation);
         }
         else
