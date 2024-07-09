@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        model = new PlayerModel();
+        model = GetComponent<PlayerModel>();
         view = GetComponent<PlayerView>();
         inputController = gameObject.AddComponent<PlayerInputController>(); 
         movementController = gameObject.AddComponent<PlayerMovementController>();
