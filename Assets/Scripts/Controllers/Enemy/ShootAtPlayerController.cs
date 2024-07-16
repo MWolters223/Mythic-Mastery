@@ -31,9 +31,21 @@ public class ShootAtPlayerController : MonoBehaviour
         }
     }
 
-    void ShootProjectile()
+    public void ShootProjectile()
     {
         Vector3 projectileSpawnPosition = model.statueTransform.position + model.statueTransform.forward * model.projectileRadius + new Vector3(0, model.shootingHeight, 0);
-        view.ShootProjectile(projectileSpawnPosition, model.statueTransform.rotation, model.projectileSpeed, model.maxReflectCount);
+
+        GameObject projectile = Instantiate(view.projectilePrefab, projectileSpawnPosition, model.statueTransform.rotation);
+
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.maxReflectCount = model.maxReflectCount;
+        projectileScript.reflectCount = 0;
+        projectileScript.speed = model.projectileSpeed;
+
+        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+        if (projectileRb != null)
+        {
+            projectileRb.velocity = model.statueTransform.forward * model.projectileSpeed;
+        }
     }
 }

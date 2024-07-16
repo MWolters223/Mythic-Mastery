@@ -1,15 +1,18 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyView : MonoBehaviour
 {
     public Transform statueTransform;
     public Transform diskTransform;
     public GameObject projectilePrefab;
+    public NavMeshAgent navMeshAgent; 
 
-    public void Initialize(Transform statue, Transform disk)
+    public void Initialize(Transform statue, Transform disk, NavMeshAgent navMeshAgent)
     {
-        statueTransform = statue;
-        diskTransform = disk;
+        this.statueTransform = statue;
+        this.diskTransform = disk;
+        this.navMeshAgent = navMeshAgent;
     }
 
     public Vector3 GetRotationPoint()
@@ -25,34 +28,11 @@ public class EnemyView : MonoBehaviour
         statueTransform.Rotate(Vector3.up, angle * Time.deltaTime);
     }
 
-    public void ShootProjectile(Vector3 position, Quaternion rotation, float speed, int maxReflectCount)
+    public void SetDestination(Vector3 position)
     {
-        GameObject projectile = Instantiate(projectilePrefab, position, rotation);
-        Projectile projectileScript = projectile.GetComponent<Projectile>();
-        projectileScript.maxReflectCount = maxReflectCount;
-        projectileScript.reflectCount = 0;
-        projectileScript.speed = speed;
-
-        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-        if (projectileRb != null)
+        if (navMeshAgent != null)
         {
-            projectileRb.velocity = statueTransform.forward * speed;
+            navMeshAgent.SetDestination(position);
         }
-    }
-
-    public void Move(Vector3 position, Quaternion rotation)
-    {
-        transform.position = position;
-        transform.rotation = rotation;
-    }
-
-    public void SetVelocity(Vector3 velocity)
-    {
-        GetComponent<Rigidbody>().velocity = velocity;
-    }
-
-    public void SetPosition(Vector3 position)
-    {
-        transform.position = position;
     }
 }

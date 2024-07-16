@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour
 
         aimAtPlayerController.Initialise(model, view);
         collisionController.Initialize(model, view);
-        followPlayerController.Initialize(navMeshAgent, model, view); 
+        followPlayerController.Initialize(model, view); 
         shootAtPlayerController.Initialize(model, view);
 
         InitializeView();
@@ -38,6 +38,13 @@ public class EnemyController : MonoBehaviour
 
     private void InitializeView()
     {
+
+        if (!navMeshAgent)
+        {
+            Debug.Log("NavMeshAgent: NavMeshAgent is not assigned"); 
+            return;
+        }
+
         if (!enemyPrefab || !projectilePrefab)
         {
             Debug.LogError("EnemyController: EnemyPrefab or ProjectilePrefab is not assigned.");
@@ -53,7 +60,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        view.Initialize(statueTransform, diskTransform);
+        view.Initialize(statueTransform, diskTransform, navMeshAgent);
     }
 
     void Update()

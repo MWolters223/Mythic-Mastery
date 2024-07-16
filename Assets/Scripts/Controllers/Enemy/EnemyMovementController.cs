@@ -3,17 +3,15 @@ using UnityEngine.AI;
 
 public class EnemyMovementController : MonoBehaviour
 {
-    private NavMeshAgent agent;
     private GameObject player;
     private EnemyModel model;
     private EnemyView view;
 
-    public void Initialize(NavMeshAgent agent, EnemyModel model, EnemyView view)
+    public void Initialize(EnemyModel model, EnemyView view)
     {
-        this.agent = agent;
         this.model = model; 
         this.view = view;
-        agent.speed = model.speed;
+        view.navMeshAgent.speed = model.speed;
 
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
@@ -30,14 +28,14 @@ public class EnemyMovementController : MonoBehaviour
     public void setRandomPoint()
     {
         NavMeshHit hit;
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        if (view.navMeshAgent.remainingDistance <= view.navMeshAgent.stoppingDistance)
         {
             Vector3 randompoint = view.GetRotationPoint() + UnityEngine.Random.insideUnitSphere * model.range;
             Debug.DrawRay(randompoint, Vector3.up, Color.red, 10.0f);
 
             if (NavMesh.SamplePosition(randompoint, out hit, 1.0f, NavMesh.AllAreas))
             {
-                agent.SetDestination(randompoint);
+                view.SetDestination(randompoint);
             }
         }
     }
@@ -46,7 +44,7 @@ public class EnemyMovementController : MonoBehaviour
     {
         if (player != null)
         {
-            agent.destination = GetPlayerPosition(); 
+            view.navMeshAgent.destination = GetPlayerPosition(); 
         }
         else
         {
@@ -56,9 +54,9 @@ public class EnemyMovementController : MonoBehaviour
 
     public void StopAiMovement()
     {
-        if (agent != null)
+        if (view.navMeshAgent != null)
         {
-            agent.destination = transform.position;
+            view.SetDestination(transform.position);
         }
 
         Rigidbody aiRigidbody = GetComponent<Rigidbody>();
