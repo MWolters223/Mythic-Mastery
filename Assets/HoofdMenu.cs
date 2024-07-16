@@ -10,54 +10,37 @@ public class HoofdMenu : MonoBehaviour
     
     public void TerugNaarMenu()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneManager.LoadSceneAsync(0);
+        AnimationManager.Instance.loadNextScene(0);
     }
 
     public void SpelOpties()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneManager.LoadSceneAsync(1);
+        AnimationManager.Instance.loadNextScene(1);
     }
 
     public void StartSpelAnimatie()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneAnimation.Active.EindScene();
-        //Invoke("Fadeout", 2f);
-        Invoke("StartSpel", 2f);
-        
-    }
-
-    public void StartSpel()
-    {
-        AudioManager.instance.musicSource.Stop();
-        SceneManager.LoadSceneAsync(7);
-        Time.timeScale = 1;
+        AnimationManager.Instance.loadNextScene(7);
     }
 
     public void SpelInstructies()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneManager.LoadSceneAsync(2);
+        AnimationManager.Instance.loadNextScene(2);
     }
 
     public void Credits()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneManager.LoadSceneAsync(3);
+        AnimationManager.Instance.loadNextScene(3);
     }
 
     public void SpelMenu()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneManager.LoadSceneAsync(4);
+        AnimationManager.Instance.loadNextScene(4);
     }
 
     public void Winkel()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
-        SceneManager.LoadSceneAsync(5);
+        AnimationManager.Instance.loadNextScene(5);
     }
 
     public void Stoppen()
