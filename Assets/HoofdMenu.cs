@@ -69,10 +69,9 @@ public class HoofdMenu : MonoBehaviour
 
     public void TerugNaarMenuVanuitSpel()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
         AudioManager.instance.musicSource.Stop();
         AudioManager.instance.PlayMusic("Thema");
-        SceneManager.LoadScene(6);
+        AnimationManager.Instance.loadNextScene(6);
     }
 
     public void HervatSpel()
