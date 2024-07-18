@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject godPrefab;
-    public GameObject projectilePrefab;
 
     private PlayerModel model;
     private PlayerView view;
@@ -12,19 +11,22 @@ public class PlayerController : MonoBehaviour
     private PlayerShootingController shootingController;
     private PlayerCollisionController collisionController;
 
+    private PlayerConfig config; 
+
     private float cooldownTimer;
 
     void Start()
     {
         model = GetComponent<PlayerModel>();
         view = GetComponent<PlayerView>();
+        config = model.config;
         inputController = gameObject.AddComponent<PlayerInputController>(); 
         movementController = gameObject.AddComponent<PlayerMovementController>();
         shootingController = gameObject.AddComponent<PlayerShootingController>();
         collisionController = gameObject.AddComponent<PlayerCollisionController>();
 
         movementController.Initialize(model, view, GetComponent<Rigidbody>());
-        shootingController.Initialize(model, view, projectilePrefab);
+        shootingController.Initialize(model, view);
         collisionController.Initialize(model, view);
 
         InitializeView();
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     private void InitializeView()
     {
-        if (!godPrefab || !projectilePrefab)
+        if (!godPrefab || !config.projectilePrefab)
         {
             Debug.LogError("PlayerController: GodPrefab or ProjectilePrefab is not assigned.");
             return;
@@ -70,7 +72,7 @@ public class PlayerController : MonoBehaviour
         if (inputController.IsShooting() && cooldownTimer <= 0)
         {
             shootingController.HandleShooting(mouseDirection);
-            cooldownTimer = model.shootingCooldown;
+            cooldownTimer = config.shootingCooldown;
         }
 
         if (cooldownTimer > 0)
@@ -103,7 +105,7 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(transform.position, direction);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground", "Obstacle", "Enemy")))
         {
-            view.UpdateLaser(transform.position + new Vector3(0, model.shootingHeight, 0), hit.point + new Vector3(0, model.shootingHeight, 0));
+            view.UpdateLaser(transform.position + new Vector3(0, config.shootingHeight, 0), hit.point + new Vector3(0, config.shootingHeight, 0));
         }
         else
         {

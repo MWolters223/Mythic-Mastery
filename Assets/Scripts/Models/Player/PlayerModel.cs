@@ -6,37 +6,17 @@ public class PlayerModel : MonoBehaviour
 {
     [Header("Setup Required")]
     public GameObject godPrefab;
-    public GameObject projectilePrefab;
 
-    [Header("Movement properties")]
-    public float speed = 35.0f;
-    public float rotationSpeed = 100.0f;
+    public PlayerConfig config;
 
-    [Header("Aiming properties")]
-    public Transform statueTransform;
-    public float aimSpeed = 100.0f;
-    public Transform diskTransform;
     private Rigidbody rb;
 
-    [Header("Projectile properties")]
-    public float projectileSpeed = 30.0f;
-    public float projectileRadius = 15.0f;
-    public float shootingCooldown = 0.5f;
-    public float cooldownTimer = 0.0f;
-    public int maxReflectCount = 1;
-    public float shootingHeight = 10.0f;
+    public Transform statueTransform;
+    public Transform diskTransform;
 
-    [Header("Lazer properties")]
     public LineRenderer lineRenderer;
-    public LayerMask groundMask;
-    public LayerMask obstacleMask;
-    public LayerMask enemyMask;
 
-    [Header("Avoid sfinx properties")]
-    public float avoidEnemyRadius = 1.0f;
-    public float smoothTime = 0.1f;
     public Vector3 velocity = Vector3.zero;
-    public float avoidEnemyDistance = 2.0f;
 
     void Start()
     {
@@ -92,9 +72,9 @@ public class PlayerModel : MonoBehaviour
 
     private void InitializeLayerMasks()
     {
-        groundMask = GetLayerMask("Ground");
-        obstacleMask = GetLayerMask("Obstacle");
-        enemyMask = GetLayerMask("Enemy");
+        config.groundMask = GetLayerMask("Ground");
+        config.obstacleMask = GetLayerMask("Obstacle");
+        config.enemyMask = GetLayerMask("Enemy");
     }
 
     private LayerMask GetLayerMask(string layerName)

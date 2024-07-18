@@ -3,9 +3,13 @@ using UnityEngine.AI;
 
 public class EnemyView : MonoBehaviour
 {
+    [HideInInspector]
     public Transform statueTransform;
+
+    [HideInInspector]
     public Transform diskTransform;
-    public GameObject projectilePrefab;
+
+    [HideInInspector]
     public NavMeshAgent navMeshAgent; 
 
     public void Initialize(Transform statue, Transform disk, NavMeshAgent navMeshAgent)

@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerConfig : ScriptableObject
 {
     [Header("Setup Required")]
-    public GameObject godPrefab;
     public GameObject projectilePrefab;
 
     [Header("Movement properties")]
@@ -13,6 +12,8 @@ public class PlayerConfig : ScriptableObject
 
     [Header("Aiming properties")]
     public float aimSpeed = 100.0f;
+
+    [Header("Projectile properties")]
     public float projectileSpeed = 30.0f;
     public float projectileRadius = 15.0f;
     public float shootingCooldown = 0.5f;

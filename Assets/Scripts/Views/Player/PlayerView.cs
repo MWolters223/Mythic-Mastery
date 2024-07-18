@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-    public Transform StatueTransform { get; private set; }
-    public Transform DiskTransform { get; private set; }
+
+    [HideInInspector]
+    public Transform StatueTransform;
+
+    [HideInInspector]
+    public Transform DiskTransform;
+
     private LineRenderer lineRenderer;
 
     public void Initialize(Transform statueTransform, Transform diskTransform, LineRenderer lineRenderer)
