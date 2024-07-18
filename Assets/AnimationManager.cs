@@ -69,6 +69,11 @@ public class AnimationManager : MonoBehaviour
             MusicAnimator.SetTrigger("Muziek fade out");
         }
 
+        if (sceneBuilderIndex > FirstLevelIndex)
+        {
+            MusicAnimator.SetTrigger("Muziek fade out");
+        }
+
         // Sluit de deur animatie
         yield return StartCoroutine(CloseDoorAnimation());
 
@@ -78,7 +83,7 @@ public class AnimationManager : MonoBehaviour
             yield return SceneManager.LoadSceneAsync(sceneBuilderIndex);
             yield return StartCoroutine(OpenDoorAnimation());
         }
-        else if (sceneBuilderIndex == TransistionSceneIndex)
+        else if (sceneBuilderIndex == TransistionSceneIndex) //start eerste level
         {
             yield return SceneManager.LoadSceneAsync(TransistionSceneIndex);
 
@@ -91,9 +96,18 @@ public class AnimationManager : MonoBehaviour
             AudioManager.instance.PlayMusic("Battle Muziek");
             MusicAnimator.SetTrigger("Muziek fade in");
         }
+        else if (sceneBuilderIndex > FirstLevelIndex) //level wissel animatie
+        {
+            yield return SceneManager.LoadSceneAsync(TransistionSceneIndex);
+            yield return StartCoroutine(OpenDoorAnimation());
+            yield return new WaitForSeconds(5f);
+            yield return StartCoroutine(CloseDoorAnimation());
+            yield return StartCoroutine(LoadAsync(sceneBuilderIndex));
+            yield return StartCoroutine(OpenDoorAnimation());
+        }
         else
         {
-            yield return StartCoroutine(OpenDoorAnimation());
+            yield return StartCoroutine(OpenDoorAnimation()); //open deur in uiterste geval om bugs te voorkomen
         }
     }
 
