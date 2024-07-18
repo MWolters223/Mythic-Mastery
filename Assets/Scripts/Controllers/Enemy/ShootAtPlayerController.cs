@@ -6,10 +6,13 @@ public class ShootAtPlayerController : MonoBehaviour
     private EnemyModel model;
     private EnemyView view;
 
+    private EnemyConfig config;
+
     public void Initialize(EnemyModel model, EnemyView view) 
     {
         this.model = model;
         this.view = view; 
+        this.config = model.config;
 
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
@@ -20,32 +23,34 @@ public class ShootAtPlayerController : MonoBehaviour
 
     public void ShootAtPlayer()
     {
+       
         if (player != null && model.cooldownTimer <= 0)
         {
             ShootProjectile();
-            model.cooldownTimer = model.shootingCooldown;
+            model.cooldownTimer = config.shootingCooldown;
         }
         else
-        {
+        { 
             model.cooldownTimer -= Time.deltaTime;
         }
     }
 
     public void ShootProjectile()
     {
-        Vector3 projectileSpawnPosition = model.statueTransform.position + model.statueTransform.forward * model.projectileRadius + new Vector3(0, model.shootingHeight, 0);
+        Transform statueTransform = model.statueTransform;
+        Vector3 projectileSpawnPosition = statueTransform.position + statueTransform.forward * config.projectileRadius + new Vector3(0, config.shootingHeight, 0);
 
-        GameObject projectile = Instantiate(view.projectilePrefab, projectileSpawnPosition, model.statueTransform.rotation);
+        GameObject projectile = Instantiate(config.projectilePrefab, projectileSpawnPosition, statueTransform.rotation);
 
         Projectile projectileScript = projectile.GetComponent<Projectile>();
-        projectileScript.maxReflectCount = model.maxReflectCount;
+        projectileScript.maxReflectCount = config.maxReflectCount;
         projectileScript.reflectCount = 0;
-        projectileScript.speed = model.projectileSpeed;
+        projectileScript.speed = config.projectileSpeed;
 
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
         if (projectileRb != null)
         {
-            projectileRb.velocity = model.statueTransform.forward * model.projectileSpeed;
+            projectileRb.velocity = statueTransform.forward * config.projectileSpeed;
         }
     }
 }

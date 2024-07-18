@@ -6,15 +6,18 @@ public class CollisionController : MonoBehaviour
     private EnemyModel model;
     private EnemyView view;
 
+    private EnemyConfig config;
+
     public void Initialize(EnemyModel model, EnemyView view)
     {
         this.model = model;
         this.view = view;
+        this.config = model.config;
     }
 
     public void PreventSfinxCollision()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, model.avoidEnemyRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, config.avoidEnemyRadius);
 
         foreach (Collider collider in colliders)
         {
@@ -33,7 +36,7 @@ public class CollisionController : MonoBehaviour
                 {
                     float offset = 1f;
                     Vector3 targetPosition = transform.position + direction * (distance + offset);
-                    transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref model.velocity, model.smoothTime);
+                    transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref model.velocity, config.smoothTime);
                 }
             }
         }

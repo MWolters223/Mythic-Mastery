@@ -6,10 +6,13 @@ public class AimAtPlayerController : MonoBehaviour
     private EnemyModel model;
     private EnemyView view;
 
+    private EnemyConfig config;
+
     public void Initialise(EnemyModel model, EnemyView view)
     {
         this.model = model;
         this.view = view;
+        this.config = model.config;
     }
 
     public void AimAtPlayer()
@@ -22,7 +25,7 @@ public class AimAtPlayerController : MonoBehaviour
             direction.y = 0;
 
             Quaternion rotation = Quaternion.LookRotation(direction);
-            model.statueTransform.rotation = Quaternion.Slerp(model.statueTransform.rotation, rotation, Time.deltaTime * model.rotationSpeed);
+            model.statueTransform.rotation = Quaternion.Slerp(model.statueTransform.rotation, rotation, Time.deltaTime * config.rotationSpeed);
         }
     }
 }

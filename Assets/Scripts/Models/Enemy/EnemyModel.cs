@@ -6,39 +6,20 @@ using UnityEngine.AI;
 
 public class EnemyModel : MonoBehaviour
 {
-    private NavMeshAgent agent;
-    private Rigidbody rb;
-    private GameObject Player;
 
     [Header("Required")]
     public GameObject GodPrefab;
-    public GameObject ProjectilePrefab;
 
-    [Header("Aiming properties")]
-    public float rotationSpeed = 5.0f;
-    public float idleRotationSpeed = 100.0f;
+    private Rigidbody rb;
+    private GameObject Player;
+
+    public EnemyConfig config;
+
+    public NavMeshAgent agent;
     public Transform statueTransform;
     public Transform diskTransform;
-
-    [Header("Projectile properties")]
-    public float projectileSpeed = 30.0f;
-    public float projectileRadius = 15.0f;
-    public float shootingCooldown = 2.0f;
-    public float cooldownTimer = 0.0f;
-    public int maxReflectCount = 1;
-    public float shootingHeight = 10.0f;
-
-    [Header("RandomDriveProperty")]
-    public float range = 200.0f;
-
-    [Header("Movement")]
-    public float speed = 10.0f;
-
-    [Header("Avoid sfinx properties")]
-    public float avoidEnemyRadius = 1.0f;
-    public float smoothTime = 0.1f;
+    public float cooldownTimer;
     public Vector3 velocity = Vector3.zero;
-    public float avoidEnemyDistance = 2.0f;
 
     void Start()
     {
@@ -49,7 +30,7 @@ public class EnemyModel : MonoBehaviour
 
     void Awake()
     {
-        cooldownTimer = 0.0f;
+        cooldownTimer = config.shootingCooldown;
     }
 
     private void InitializeComponents()
@@ -62,7 +43,7 @@ public class EnemyModel : MonoBehaviour
         }
         else
         {
-            agent.speed = speed;
+            agent.speed = config.speed;
         }
 
         rb = GetComponent<Rigidbody>();
@@ -114,6 +95,11 @@ public class EnemyModel : MonoBehaviour
             Debug.LogError("Player is not in scene or player has no tag Player");
         }
 
-        cooldownTimer = shootingCooldown;
+        cooldownTimer = config.shootingCooldown;
+    }
+
+    public void SetShootingCooldownTimer(float cooldown)
+    {
+        cooldownTimer = cooldown;
     }
 }

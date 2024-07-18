@@ -5,10 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public GameObject projectilePrefab;
-
-    public NavMeshAgent navMeshAgent;
     private GameObject player;
 
     private EnemyModel model; 
@@ -18,11 +14,12 @@ public class EnemyController : MonoBehaviour
     private EnemyMovementController followPlayerController;
     private ShootAtPlayerController shootAtPlayerController;
 
+    private EnemyConfig config;
+
     void Start()
     {
         model = GetComponent<EnemyModel>();
         view = GetComponent<EnemyView>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
         aimAtPlayerController = gameObject.AddComponent<AimAtPlayerController>();
         collisionController = gameObject.AddComponent<CollisionController>();
         followPlayerController = gameObject.AddComponent<EnemyMovementController>();
@@ -33,26 +30,16 @@ public class EnemyController : MonoBehaviour
         followPlayerController.Initialize(model, view); 
         shootAtPlayerController.Initialize(model, view);
 
+        this.config = model.config;
+
         InitializeView();
     }
 
     private void InitializeView()
     {
-
-        if (!navMeshAgent)
-        {
-            Debug.Log("NavMeshAgent: NavMeshAgent is not assigned"); 
-            return;
-        }
-
-        if (!enemyPrefab || !projectilePrefab)
-        {
-            Debug.LogError("EnemyController: EnemyPrefab or ProjectilePrefab is not assigned.");
-            return;
-        }
-
-        Transform statueTransform = enemyPrefab.transform.Find("standbeeld");
-        Transform diskTransform = enemyPrefab.transform.Find("grondplaat");
+        GameObject godPrefab = model.GodPrefab;
+        Transform statueTransform = godPrefab.transform.Find("standbeeld");
+        Transform diskTransform = godPrefab.transform.Find("grondplaat");
 
         if (statueTransform == null || diskTransform == null)
         {
@@ -60,7 +47,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
-        view.Initialize(statueTransform, diskTransform, navMeshAgent);
+        view.Initialize(statueTransform, diskTransform, model.agent);
     }
 
     void Update()
@@ -69,7 +56,7 @@ public class EnemyController : MonoBehaviour
 
         if (player != null)
         {
-            if (!ObjectWithTagInView("Player"))
+            if (ObjectWithTagInView("Player"))
             {
                 aimAtPlayerController.AimAtPlayer();
                 followPlayerController.MoveToPlayer();
@@ -80,18 +67,18 @@ public class EnemyController : MonoBehaviour
                 }
                 else
                 {
-                    if (ObjectWithTagInView("Enemy"))
+                    if (!ObjectWithTagInView("Enemy"))
                     {
                         shootAtPlayerController.ShootAtPlayer();
-                        AudioManager.instance.PlaySFX("Scarabee afgevuurt");
+                        //AudioManager.instance.PlaySFX("Scarabee afgevuurt");
                     }
-                    model.cooldownTimer = model.shootingCooldown;
+                    model.cooldownTimer = config.shootingCooldown;
 
                 }
             }
             else
             {
-                view.RotateStatue(model.idleRotationSpeed);
+                view.RotateStatue(config.idleRotationSpeed);
                 followPlayerController.setRandomPoint();
             }
         }
@@ -113,19 +100,19 @@ public class EnemyController : MonoBehaviour
         RaycastHit hit;
 
         Vector3 direction = player.transform.position - view.statueTransform.position;
-        Vector3 raycastStart = new Vector3(view.statueTransform.position.x, model.shootingHeight, view.statueTransform.position.z);
+        Vector3 raycastStart = new Vector3(view.statueTransform.position.x, config.shootingHeight, view.statueTransform.position.z);
 
         if (Physics.Raycast(raycastStart, direction, out hit))
         {
             if (hit.collider.CompareTag(tag))
             {
                 Debug.DrawRay(raycastStart, direction, Color.green);
-                return false;
+                return true;
             }
         }
         Debug.DrawRay(raycastStart, direction, Color.red);
 
 
-        return true;
+        return false;
     }
 }
