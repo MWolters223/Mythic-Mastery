@@ -87,6 +87,9 @@ public class AnimationManager : MonoBehaviour
             yield return StartCoroutine(CloseDoorAnimation());
             yield return StartCoroutine(LoadAsync(FirstLevelIndex));
             yield return StartCoroutine(OpenDoorAnimation());
+
+            AudioManager.instance.PlayMusic("Battle Muziek");
+            MusicAnimator.SetTrigger("Muziek fade in");
         }
         else
         {
