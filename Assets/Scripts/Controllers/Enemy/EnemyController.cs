@@ -70,7 +70,7 @@ public class EnemyController : MonoBehaviour
                     if (!ObjectWithTagInView("Enemy"))
                     {
                         shootAtPlayerController.ShootAtPlayer();
-                        //AudioManager.instance.PlaySFX("Scarabee afgevuurt");
+                        AudioManager.instance.PlaySFX("Scarabee afgevuurt");
                     }
                     model.cooldownTimer = config.shootingCooldown;
 

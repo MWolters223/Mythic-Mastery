@@ -83,12 +83,12 @@ public class Projectile : MonoBehaviour
                 if (reflectCount >= maxReflectCount)
                 {
                     Destroy(gameObject);
-                    //AudioManager.instance.PlaySFX("Scarabee raakt muur");
+                    AudioManager.instance.PlaySFX("Scarabee raakt muur");
                 }
                 else
                 {
                     BounceProjectile(collision);
-                    //AudioManager.instance.PlaySFX("Scarabee raakt muur");
+                    AudioManager.instance.PlaySFX("Scarabee raakt muur");
                 }
 
                 break;
@@ -100,7 +100,7 @@ public class Projectile : MonoBehaviour
         GameObject enemyParent = enemy.transform.parent?.gameObject;
         Destroy(enemyParent ?? enemy);
         Destroy(gameObject);
-        //AudioManager.instance.PlaySFX("Standbeeld neer");
+        AudioManager.instance.PlaySFX("Standbeeld neer");
     }
 
     void DestroyPlayer(GameObject player)
@@ -108,7 +108,7 @@ public class Projectile : MonoBehaviour
         GameObject playerParent = player.transform.parent?.gameObject;
         Destroy(playerParent ?? player);
         Destroy(gameObject);
-        //AudioManager.instance.PlaySFX("Standbeeld neer");
+        AudioManager.instance.PlaySFX("Standbeeld neer");
 
         GameObject laser = GameObject.Find("Line");
         if (laser != null)

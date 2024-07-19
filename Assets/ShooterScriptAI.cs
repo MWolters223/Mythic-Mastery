@@ -93,7 +93,7 @@ public class ShooterScriptAI : MonoBehaviour
                     if (ObstacleBetween("Enemy"))
                     {
                         ShootProjectile();
-                        //AudioManager.instance.PlaySFX("Scarabee afgevuurt");
+                        AudioManager.instance.PlaySFX("Scarabee afgevuurt");
                     }
                     cooldownTimer = shootingCooldown;
                 }
