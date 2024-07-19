@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject godPrefab;
-
     private PlayerModel model;
     private PlayerView view;
     private PlayerInputController inputController;
@@ -18,8 +16,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         model = GetComponent<PlayerModel>();
+        this.config = model.config;
+
         view = GetComponent<PlayerView>();
-        config = model.config;
+        InitializeView();
+
         inputController = gameObject.AddComponent<PlayerInputController>(); 
         movementController = gameObject.AddComponent<PlayerMovementController>();
         shootingController = gameObject.AddComponent<PlayerShootingController>();
@@ -28,13 +29,19 @@ public class PlayerController : MonoBehaviour
         movementController.Initialize(model, view, GetComponent<Rigidbody>());
         shootingController.Initialize(model, view);
         collisionController.Initialize(model, view);
-
-        InitializeView();
     }
 
     private void InitializeView()
     {
-        if (!godPrefab || !config.projectilePrefab)
+        GameObject godPrefab = model.godPrefab;
+
+        if (!config.projectilePrefab)
+        {
+            Debug.LogError("config not loaded");
+            return;
+        }
+
+        if (!godPrefab)
         {
             Debug.LogError("PlayerController: GodPrefab or ProjectilePrefab is not assigned.");
             return;

@@ -19,7 +19,11 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         model = GetComponent<EnemyModel>();
+        this.config = model.config;
+
         view = GetComponent<EnemyView>();
+        InitializeView();
+
         aimAtPlayerController = gameObject.AddComponent<AimAtPlayerController>();
         collisionController = gameObject.AddComponent<CollisionController>();
         followPlayerController = gameObject.AddComponent<EnemyMovementController>();
@@ -29,10 +33,6 @@ public class EnemyController : MonoBehaviour
         collisionController.Initialize(model, view);
         followPlayerController.Initialize(model, view); 
         shootAtPlayerController.Initialize(model, view);
-
-        this.config = model.config;
-
-        InitializeView();
     }
 
     private void InitializeView()
