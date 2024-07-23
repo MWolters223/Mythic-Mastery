@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
-    [Header("Setup Required")]
+    [HideInInspector]
     public GameObject godPrefab;
 
     public PlayerConfig config;
-
+    
+    [HideInInspector]
     private Rigidbody rb;
 
+    [HideInInspector]
     public Transform statueTransform;
+
+    [HideInInspector]
     public Transform diskTransform;
 
+    [HideInInspector]
     public LineRenderer lineRenderer;
 
+    [HideInInspector]
     public Vector3 velocity = Vector3.zero;
 
     void Start()

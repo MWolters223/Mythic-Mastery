@@ -6,17 +6,28 @@ using UnityEngine.AI;
 
 public class EnemyModel : MonoBehaviour
 {
+    [HideInInspector]
     public GameObject GodPrefab;
 
     private Rigidbody rb;
+
     private GameObject Player;
 
     public EnemyConfig config;
 
+    [HideInInspector]
     public NavMeshAgent agent;
+
+    [HideInInspector]
     public Transform statueTransform;
+
+    [HideInInspector]
     public Transform diskTransform;
+
+    [HideInInspector]
     public float cooldownTimer;
+
+    [HideInInspector]
     public Vector3 velocity = Vector3.zero;
 
     void Start()
@@ -28,6 +39,7 @@ public class EnemyModel : MonoBehaviour
 
     void Awake()
     {
+        GodPrefab = this.gameObject;
         cooldownTimer = config.shootingCooldown;
     }
 
