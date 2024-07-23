@@ -6,8 +6,6 @@ using UnityEngine.AI;
 
 public class EnemyModel : MonoBehaviour
 {
-
-    [Header("Required")]
     public GameObject GodPrefab;
 
     private Rigidbody rb;

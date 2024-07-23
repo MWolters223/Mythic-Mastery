@@ -3,13 +3,23 @@ using UnityEngine;
 
 public class SfinxModel : MonoBehaviour
 {
-    [Header("Setup Required")]
+    [HideInInspector]
     public GameObject GodPrefab;
+
     public SfinxConfig SfinxConfig;
-    public GameObject Player { get; set; }
-    private Rigidbody rb { get; set; } 
-    public Transform StatueTransform { get; set; }
-    public Transform DiskTransform { get; set; }
+
+    [HideInInspector]
+    public GameObject Player;
+
+    private Rigidbody rb;
+
+    [HideInInspector]
+    public Transform StatueTransform;
+
+    [HideInInspector]
+    public Transform DiskTransform;
+
+    [HideInInspector]
     public float cooldownTimer;
 
     private void Start()
@@ -21,6 +31,7 @@ public class SfinxModel : MonoBehaviour
 
     void Awake()
     {
+        GodPrefab = this.gameObject;
         cooldownTimer = SfinxConfig.shootingCooldown;
     }
 
