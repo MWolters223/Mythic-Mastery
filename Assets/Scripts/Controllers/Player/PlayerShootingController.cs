@@ -51,7 +51,7 @@ public class PlayerShootingController : MonoBehaviour
 
     private void ConfigureProjectile(GameObject projectileObj)
     {
-        Projectile projectile = projectileObj.GetComponent<Projectile>();
+        ScarabeeModel projectile = projectileObj.GetComponent<ScarabeeModel>();
         projectile.maxReflectCount = config.maxReflectCount;
         projectile.speed = config.projectileSpeed;
     }

@@ -42,7 +42,7 @@ public class ShootAtPlayerController : MonoBehaviour
 
         GameObject projectile = Instantiate(config.projectilePrefab, projectileSpawnPosition, statueTransform.rotation);
 
-        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        ScarabeeModel projectileScript = projectile.GetComponent<ScarabeeModel>();
         projectileScript.maxReflectCount = config.maxReflectCount;
         projectileScript.reflectCount = 0;
         projectileScript.speed = config.projectileSpeed;

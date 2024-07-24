@@ -14,19 +14,18 @@ public class SfinxShootAtPlayerController : MonoBehaviour
         this.config = model.SfinxConfig;
     }
 
-
     public void ShootProjectile()
     {
         Vector3 projectileSpawnPosition = model.StatueTransform.position + model.StatueTransform.forward * config.projectileRadius + new Vector3(0, config.shootingHeight, 0);
 
         GameObject projectile = Instantiate(config.projectilePrefab, projectileSpawnPosition, model.StatueTransform.rotation);
 
-        Projectile projectile1 = projectile.GetComponent<Projectile>();
-        projectile1.maxReflectCount = config.maxReflectCount;
-        projectile1.reflectCount = 0;
-        projectile1.speed = config.projectileSpeed;
+        ScarabeeModel scarabee = projectile.GetComponent<ScarabeeModel>();
+        scarabee.maxReflectCount = config.maxReflectCount;
+        scarabee.reflectCount = 0;
+        scarabee.speed = config.projectileSpeed;
 
-        Rigidbody projectileRb = projectile1.GetComponent<Rigidbody>();
+        Rigidbody projectileRb = scarabee.GetComponent<Rigidbody>();
         if (projectileRb != null)
         {
             projectileRb.velocity = model.StatueTransform.forward * config.projectileSpeed;
