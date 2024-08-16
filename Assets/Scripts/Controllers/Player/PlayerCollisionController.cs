@@ -28,7 +28,7 @@ public class PlayerCollisionController : MonoBehaviour
                     out Vector3 direction, out float distance))
                 {
                     Vector3 targetPosition = transform.position + direction * (distance + 1f);
-                    view.SetPosition(Vector3.SmoothDamp(transform.position, targetPosition, ref model.velocity, config.smoothTime));
+                    transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref model.velocity, config.smoothTime);
                 }
             }
         }

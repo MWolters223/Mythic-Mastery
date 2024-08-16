@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-
     [HideInInspector]
     public Transform StatueTransform;
 
@@ -11,11 +10,17 @@ public class PlayerView : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
-    public void Initialize(Transform statueTransform, Transform diskTransform, LineRenderer lineRenderer)
+    public void Initialize(PlayerModel model)
     {
-        StatueTransform = statueTransform;
-        DiskTransform = diskTransform;
-        this.lineRenderer = lineRenderer;
+        GameObject godPrefab = model.godPrefab;
+        StatueTransform = godPrefab.transform.Find("standbeeld");
+        DiskTransform = godPrefab.transform.Find("grondplaat");
+
+        lineRenderer = GameObject.Find("Line")?.GetComponent<LineRenderer>();
+        if (lineRenderer == null)
+        {
+            Debug.LogError("PlayerView: LineRenderer component not found.");
+        }
     }
 
     public void Move(Vector3 position, Quaternion rotation)
@@ -24,31 +29,38 @@ public class PlayerView : MonoBehaviour
         transform.rotation = rotation;
     }
 
-    public void SetVelocity(Vector3 velocity)
+    public Vector3 GetRotationPoint()
     {
-        GetComponent<Rigidbody>().velocity = velocity;
+        float diskHeight = DiskTransform.localScale.y;
+        return DiskTransform.position + new Vector3(0, diskHeight / 2, 0);
     }
 
-    public void RotateStatue(Vector3 point, Vector3 axis, float angle)
+    public void HandleStatueRotation(Vector3 direction)
     {
-        StatueTransform.RotateAround(point, axis, angle);
+        if (direction.magnitude < 1f || direction == Vector3.zero) return;
+
+        Vector3 statueForward = StatueTransform.forward;
+        float angle = Vector3.SignedAngle(statueForward, direction, Vector3.up);
+        StatueTransform.RotateAround(GetRotationPoint(), Vector3.up, angle);
     }
 
-    public void UpdateLaser(Vector3 start, Vector3 end)
+    public void SetLaserPosition(Vector3 direction, float shootingHeight)
     {
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, end);
-        lineRenderer.enabled = true;
-    }
+        if (lineRenderer == null) return;
 
-    public void DisableLaser()
-    {
-        lineRenderer.enabled = false;
-    }
-
-    public void SetPosition(Vector3 position)
-    {
-        transform.position = position;
+        Ray ray = new Ray(transform.position, direction);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground", "Obstacle", "Enemy")))
+        {
+            Vector3 start = transform.position + new Vector3(0, shootingHeight, 0);
+            Vector3 end = hit.point + new Vector3(0, shootingHeight, 0);
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPosition(0, start);
+            lineRenderer.SetPosition(1, end);
+            lineRenderer.enabled = true;
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+        }
     }
 }

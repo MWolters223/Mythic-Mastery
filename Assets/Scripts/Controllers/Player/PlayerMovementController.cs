@@ -26,7 +26,7 @@ public class PlayerMovementController : MonoBehaviour
         }
         else
         {
-            view.SetVelocity(Vector3.zero);
+            GetComponent<Rigidbody>().velocity = Vector3.zero;  
         }
     }
 }

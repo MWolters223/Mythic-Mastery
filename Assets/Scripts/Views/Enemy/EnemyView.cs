@@ -15,13 +15,12 @@ public class EnemyView : MonoBehaviour
     private EnemyModel EnemyModel;
 
     public void Initialise(EnemyModel model)
-        //Transform statue, Transform disk, NavMeshAgent navMeshAgent)
     {
         GameObject godPrefab = model.GodPrefab;
 
-        this.statueTransform = godPrefab.transform.Find("standbeeld");
-        this.diskTransform = godPrefab.transform.Find("grondplaat");
-        this.navMeshAgent = navMeshAgent;
+        statueTransform = godPrefab.transform.Find("standbeeld");
+        diskTransform = godPrefab.transform.Find("grondplaat");
+        navMeshAgent = model.agent;
     }
 
     public Vector3 GetRotationPoint()
