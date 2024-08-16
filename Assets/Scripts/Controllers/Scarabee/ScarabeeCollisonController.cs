@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class ScarabeeCollisionController : MonoBehaviour
@@ -10,27 +9,31 @@ public class ScarabeeCollisionController : MonoBehaviour
     private ScarabeePlayerCollisionController playerCollisionController;
     private ScarabeeDestructionController destructionController;
 
-    private Rigidbody rb;
+    private ScarabeeDebug scarabeeDebug;
 
-    public void Initialize(ScarabeeModel model, ScarabeeView view, ScarabeeEnemyCollisionController enemyCollisionController, ScarabeePlayerCollisionController playerCollisionController, ScarabeeDestructionController destructionController)
+    private ScarabeeMovementController movementController;
+
+    public void Initialize(ScarabeeModel model, ScarabeeView view, ScarabeeEnemyCollisionController enemyCollisionController, ScarabeePlayerCollisionController playerCollisionController, ScarabeeDestructionController destructionController, ScarabeeMovementController movementController)
     {
         this.model = model;
-        this.view = view; 
+        this.view = view;
         this.enemyCollisionController = enemyCollisionController;
         this.playerCollisionController = playerCollisionController;
         this.destructionController = destructionController;
-        rb = GetComponent<Rigidbody>();
+        this.movementController = movementController;
+
+        scarabeeDebug = GetComponent<ScarabeeDebug>();
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void Update()
     {
+        movementController.UpdateMovement();
+    }
 
-        ContactPoint[] contacts = new ContactPoint[collision.contactCount];
-        collision.GetContacts(contacts);
-
-        Vector3 contact = contacts[0].normal;
-
+    private void OnCollisionEnter(Collision collision)
+    {
         GameObject collidedObject = collision.gameObject;
+
         string collidedTag = collidedObject.tag;
 
         switch (collidedTag)
@@ -52,12 +55,12 @@ public class ScarabeeCollisionController : MonoBehaviour
                 break;
 
             default:
-                HandleDefaultCollision(contact);
+                HandleDefaultCollision(collision);
                 break;
         }
     }
 
-    private void HandleDefaultCollision(Vector3 collision)
+    private void HandleDefaultCollision(Collision collision)
     {
         if (model.reflectCount >= model.maxReflectCount)
         {
@@ -68,7 +71,9 @@ public class ScarabeeCollisionController : MonoBehaviour
         {
             model.reflectCount++;
             AudioManager.instance.PlaySFX("Scarabee raakt muur");
-            view.Bounce(collision); 
+
+            movementController.ReflectMovement(collision);
+            scarabeeDebug.traveledPathPoints.Add(transform.position);
         }
     }
 }

@@ -1,22 +1,52 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class ScarabeeDebug : MonoBehaviour
 {
-    void OnDrawGizmos()
+    public float speed = 100f; // Same speed as the scarabee
+    public int maxReflections = 3; // Same max reflections as the scarabee
+    public int raycastDistance = 999;
+
+    public List<Vector3> cachedReflectionPoints;
+    public List<Vector3> traveledPathPoints;
+
+    void Start()
     {
-        Gizmos.color = Color.red;
-        // Draws an arrow to represent the right direction of the object
-        Gizmos.DrawRay(transform.position, -transform.right * 0.5f);
-
-        // Draws a wire sphere at the object's position
-        Gizmos.DrawWireSphere(transform.position, 0.25f);
-
-        // Draws the predicted reflection pattern
-        DrawPredictedReflectionPattern(transform.position + -transform.right * 0.5f, -transform.right, 3);
+        // Cache the initial reflection pattern
+        cachedReflectionPoints = new List<Vector3>();
+        traveledPathPoints = new List<Vector3>();
+        CacheReflectionPattern(transform.position, transform.forward, maxReflections);
     }
 
-    private void DrawPredictedReflectionPattern(Vector3 position, Vector3 direction, int reflectionsRemaining)
+    void OnDrawGizmos()
+    {
+        // Draw the cached reflection pattern
+        if (cachedReflectionPoints != null && cachedReflectionPoints.Count > 1)
+        {
+            Gizmos.color = Color.yellow;
+            for (int i = 0; i < cachedReflectionPoints.Count - 1; i += 2)
+            {
+                Gizmos.DrawLine(cachedReflectionPoints[i], cachedReflectionPoints[i + 1]);
+            }
+        }
+
+        // Draw the traveled path
+        if (traveledPathPoints != null && traveledPathPoints.Count > 1)
+        {
+            Gizmos.color = Color.blue;
+            for (int i = 0; i < traveledPathPoints.Count - 1; i++)
+            {
+                Gizmos.DrawLine(traveledPathPoints[i], traveledPathPoints[i + 1]);
+            }
+        }
+
+        // Also draw the arrow and sphere
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward * 0.5f);
+        Gizmos.DrawWireSphere(transform.position, 0.25f);
+    }
+
+    private void CacheReflectionPattern(Vector3 position, Vector3 direction, int reflectionsRemaining)
     {
         if (reflectionsRemaining <= 0)
             return;
@@ -25,8 +55,7 @@ public class ScarabeeDebug : MonoBehaviour
         Ray ray = new Ray(position, direction);
         RaycastHit hit;
 
-        // Perform raycast to detect collisions
-        if (Physics.Raycast(ray, out hit, 999))
+        if (Physics.Raycast(ray, out hit, raycastDistance))
         {
             // Reflect direction based on the hit normal
             direction = Vector3.Reflect(direction, hit.normal);
@@ -35,14 +64,14 @@ public class ScarabeeDebug : MonoBehaviour
         else
         {
             // If no hit, move in the direction
-            position += direction * 3;
+            position += direction * raycastDistance;
         }
 
-        // Draw a line to represent the predicted path
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(startingPosition, position);
+        // Cache the position for later use
+        cachedReflectionPoints.Add(startingPosition);
+        cachedReflectionPoints.Add(position);
 
-        // Recursively draw the next segment of the reflection pattern
-        DrawPredictedReflectionPattern(position, direction, reflectionsRemaining - 1);
+        // Recursively cache the next segment of the reflection pattern
+        CacheReflectionPattern(position, direction, reflectionsRemaining - 1);
     }
 }

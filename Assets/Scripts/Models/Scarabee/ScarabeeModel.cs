@@ -17,6 +17,8 @@ public class ScarabeeModel : MonoBehaviour
     [HideInInspector]
     public bool isIgnoringPlayer = false;
 
+    private Rigidbody rb;
+
     public void LoadScores()
     {
         Points = PlayerPrefs.GetInt("Score: ", 0);

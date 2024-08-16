@@ -11,13 +11,6 @@ public class ScarabeeView : MonoBehaviour
         this.model = model;
     }
 
-    public void Bounce(Vector3 collisionNormal)
-    {
-        var direction = Vector3.Reflect(rb.velocity.normalized, collisionNormal);
-        SetRotation(direction);
-        rb.velocity = direction * model.speed;
-    }
-
     public void SetRotation(Vector3 direction)
     {
         if (direction.magnitude > 0.01f)
