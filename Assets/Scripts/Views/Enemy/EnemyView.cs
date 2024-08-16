@@ -12,10 +12,15 @@ public class EnemyView : MonoBehaviour
     [HideInInspector]
     public NavMeshAgent navMeshAgent; 
 
-    public void Initialize(Transform statue, Transform disk, NavMeshAgent navMeshAgent)
+    private EnemyModel EnemyModel;
+
+    public void Initialise(EnemyModel model)
+        //Transform statue, Transform disk, NavMeshAgent navMeshAgent)
     {
-        this.statueTransform = statue;
-        this.diskTransform = disk;
+        GameObject godPrefab = model.GodPrefab;
+
+        this.statueTransform = godPrefab.transform.Find("standbeeld");
+        this.diskTransform = godPrefab.transform.Find("grondplaat");
         this.navMeshAgent = navMeshAgent;
     }
 
