@@ -16,6 +16,7 @@ public class EnemyView : MonoBehaviour
 
     public void Initialise(EnemyModel model)
     {
+        EnemyModel = model; 
         GameObject godPrefab = model.GodPrefab;
 
         statueTransform = godPrefab.transform.Find("standbeeld");
@@ -42,5 +43,25 @@ public class EnemyView : MonoBehaviour
         {
             navMeshAgent.SetDestination(position);
         }
+    }
+
+    public bool ObjectWithTagInView(string tag)
+    {
+        RaycastHit hit;
+
+        Vector3 direction = EnemyModel.Player.transform.position - statueTransform.position;
+        Vector3 raycastStart = new Vector3(statueTransform.position.x, EnemyModel.config.shootingHeight, statueTransform.position.z);
+
+        if (Physics.Raycast(raycastStart, direction, out hit))
+        {
+            if (hit.collider.CompareTag(tag))
+            {
+                Debug.DrawRay(raycastStart, direction, Color.green);
+                return true;
+            }
+        }
+        Debug.DrawRay(raycastStart, direction, Color.red);
+
+        return false;
     }
 }

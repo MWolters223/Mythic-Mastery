@@ -11,7 +11,8 @@ public class EnemyModel : MonoBehaviour
 
     private Rigidbody rb;
 
-    private GameObject Player;
+    [HideInInspector]
+    public GameObject Player;
 
     public EnemyConfig config;
 

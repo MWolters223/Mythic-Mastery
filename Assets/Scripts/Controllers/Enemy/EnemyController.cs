@@ -39,7 +39,7 @@ public class EnemyController : MonoBehaviour
 
         if (player != null)
         {
-            if (shootAtPlayerController.ObjectWithTagInView("Player"))
+            if (view.ObjectWithTagInView("Player"))
             {
                 aimAtPlayerController.AimAtPlayer();
                 followPlayerController.MoveToPlayer();

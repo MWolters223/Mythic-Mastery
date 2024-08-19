@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class PlayerView : MonoBehaviour
@@ -10,17 +11,16 @@ public class PlayerView : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
+    private PlayerModel playerModel;
+
     public void Initialize(PlayerModel model)
     {
+        playerModel = model;
         GameObject godPrefab = model.godPrefab;
         StatueTransform = godPrefab.transform.Find("standbeeld");
         DiskTransform = godPrefab.transform.Find("grondplaat");
 
         lineRenderer = GameObject.Find("Line")?.GetComponent<LineRenderer>();
-        if (lineRenderer == null)
-        {
-            Debug.LogError("PlayerView: LineRenderer component not found.");
-        }
     }
 
     public void Move(Vector3 position, Quaternion rotation)

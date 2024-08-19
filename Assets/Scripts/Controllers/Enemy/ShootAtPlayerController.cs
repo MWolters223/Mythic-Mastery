@@ -32,7 +32,7 @@ public class ShootAtPlayerController : MonoBehaviour
     {
         if (player != null && model.cooldownTimer <= 0)
         {
-            if (!ObjectWithTagInView("Enemy"))
+            if (!view.ObjectWithTagInView("Enemy"))
             {
                 ShootProjectile();
                 AudioManager.instance.PlaySFX("Scarabee afgevuurt");
@@ -58,25 +58,5 @@ public class ShootAtPlayerController : MonoBehaviour
         {
             projectileRb.velocity = statueTransform.forward * config.projectileSpeed;
         }
-    }
-
-    public bool ObjectWithTagInView(string tag)
-    {
-        RaycastHit hit;
-
-        Vector3 direction = player.transform.position - view.statueTransform.position;
-        Vector3 raycastStart = new Vector3(view.statueTransform.position.x, config.shootingHeight, view.statueTransform.position.z);
-
-        if (Physics.Raycast(raycastStart, direction, out hit))
-        {
-            if (hit.collider.CompareTag(tag))
-            {
-                Debug.DrawRay(raycastStart, direction, Color.green);
-                return true;
-            }
-        }
-        Debug.DrawRay(raycastStart, direction, Color.red);
-
-        return false;
     }
 }
