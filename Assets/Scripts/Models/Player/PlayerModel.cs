@@ -24,10 +24,8 @@ public class PlayerModel : MonoBehaviour
     [HideInInspector]
     public Vector3 velocity = Vector3.zero;
 
-    void Start()
+    public void Initialize()
     {
-        Debug.Log("GodController Start on " + gameObject.name);
-
         InitializeComponents();
         InitializeTransforms();
         InitializeLayerMasks();
@@ -56,11 +54,7 @@ public class PlayerModel : MonoBehaviour
 
     private void InitializeTransforms()
     {
-        if (godPrefab == null)
-        {
-            Debug.LogError("God prefab not assigned.");
-            return;
-        }
+        godPrefab = this.gameObject;
 
         statueTransform = godPrefab.transform.Find("standbeeld");
         diskTransform = godPrefab.transform.Find("grondplaat");

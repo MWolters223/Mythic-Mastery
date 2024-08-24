@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         model = GetComponent<PlayerModel>();
+        model.Initialize();
+
         config = model.config;
 
         view = GetComponent<PlayerView>();

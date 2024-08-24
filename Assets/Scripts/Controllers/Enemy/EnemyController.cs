@@ -18,16 +18,17 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         model = GetComponent<EnemyModel>();
+        model.Initialize();
 
         view = GetComponent<EnemyView>();
-        view.Initialise(model);
+        view.Initialize(model);
 
         aimAtPlayerController = gameObject.AddComponent<AimAtPlayerController>();
         collisionController = gameObject.AddComponent<CollisionController>();
         followPlayerController = gameObject.AddComponent<EnemyMovementController>();
         shootAtPlayerController = gameObject.AddComponent<ShootAtPlayerController>();
 
-        aimAtPlayerController.Initialise(model, view);
+        aimAtPlayerController.Initialize(model, view);
         collisionController.Initialize(model, view);
         followPlayerController.Initialize(model, view); 
         shootAtPlayerController.Initialize(model, view);

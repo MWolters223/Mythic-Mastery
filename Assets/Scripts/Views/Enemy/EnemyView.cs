@@ -14,14 +14,12 @@ public class EnemyView : MonoBehaviour
 
     private EnemyModel EnemyModel;
 
-    public void Initialise(EnemyModel model)
+    public void Initialize(EnemyModel model)
     {
         EnemyModel = model; 
-        GameObject godPrefab = model.GodPrefab;
-
-        statueTransform = godPrefab.transform.Find("standbeeld");
-        diskTransform = godPrefab.transform.Find("grondplaat");
-        navMeshAgent = model.agent;
+        statueTransform = EnemyModel.statueTransform;
+        diskTransform = EnemyModel.diskTransform;
+        navMeshAgent = EnemyModel.agent;
     }
 
     public Vector3 GetRotationPoint()

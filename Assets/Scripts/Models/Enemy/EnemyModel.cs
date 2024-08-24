@@ -31,21 +31,18 @@ public class EnemyModel : MonoBehaviour
     [HideInInspector]
     public Vector3 velocity = Vector3.zero;
 
-    void Start()
+    public void Initialize()
     {
         InitializeComponents();
         InitializeTransforms();
         InitializePlayer();
     }
 
-    void Awake()
+    private void InitializeComponents()
     {
         GodPrefab = this.gameObject;
         cooldownTimer = config.shootingCooldown;
-    }
 
-    private void InitializeComponents()
-    {
         agent = GetComponent<NavMeshAgent>();
 
         if (agent == null)

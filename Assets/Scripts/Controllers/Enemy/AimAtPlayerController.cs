@@ -8,7 +8,7 @@ public class AimAtPlayerController : MonoBehaviour
 
     private EnemyConfig config;
 
-    public void Initialise(EnemyModel model, EnemyView view)
+    public void Initialize(EnemyModel model, EnemyView view)
     {
         this.model = model;
         this.view = view;

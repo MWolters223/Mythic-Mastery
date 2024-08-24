@@ -1,5 +1,6 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerView : MonoBehaviour
 {
@@ -16,9 +17,8 @@ public class PlayerView : MonoBehaviour
     public void Initialize(PlayerModel model)
     {
         playerModel = model;
-        GameObject godPrefab = model.godPrefab;
-        StatueTransform = godPrefab.transform.Find("standbeeld");
-        DiskTransform = godPrefab.transform.Find("grondplaat");
+        StatueTransform = playerModel.statueTransform;
+        DiskTransform = playerModel.diskTransform;
 
         lineRenderer = GameObject.Find("Line")?.GetComponent<LineRenderer>();
     }
