@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Security.Cryptography;
 using System.Collections;
 
-public class SceneTransitionManager : MonoBehaviour
+/*public class SceneTransitionManager : MonoBehaviour
 {
     private Scene currentScene;
     private string enemyTag = "Enemy";
@@ -21,7 +21,7 @@ public class SceneTransitionManager : MonoBehaviour
     public int SceneCount => sceneCount; 
     public int NextLevelIndex => nextLevelIndex;
 
-    /*public Animator MenuTransition;
+    public Animator MenuTransition;
     public Animator MusicTransition;
     public Animator SFXTransition;*/
 
@@ -39,7 +39,7 @@ public class SceneTransitionManager : MonoBehaviour
         MusicTransition.SetTrigger("Start scene");
         SFXTransition.SetTrigger("Start scene");
         yield return new WaitForSeconds(2);
-    }*/
+    }
 
     // Singleton pattern
     void Awake()
@@ -147,4 +147,4 @@ public class SceneTransitionManager : MonoBehaviour
         AudioManager.instance.musicSource.Stop();
         AudioManager.instance.PlayMusic("Thema");
     }
-}
+}*/

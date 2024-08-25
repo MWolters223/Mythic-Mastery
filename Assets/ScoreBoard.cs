@@ -12,7 +12,7 @@ public class ScoreBoard : MonoBehaviour
 
     void Start()
     {
-        SceneAnimation.Active.StartScene();
+        //SceneAnimation.Active.StartScene();
         if (PlayerPrefs.HasKey("Score: "))
         {
             score = PlayerPrefs.GetInt("Score: ");

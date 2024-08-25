@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneAnimation : MonoBehaviour
+/*public class SceneAnimation : MonoBehaviour
 {
     public static SceneAnimation Active;
 
@@ -29,4 +29,4 @@ public class SceneAnimation : MonoBehaviour
         SceneAnimator.SetTrigger("Start scene");
         MusicAnimator.SetTrigger("Start scene");
     }
-}
+}*/

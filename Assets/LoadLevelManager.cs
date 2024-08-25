@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LoadNextLevel : MonoBehaviour
 {
-    private int nextLevelIndex = 0;
+    /*private int nextLevelIndex = 0;
     private int levelCount = 0;
     public TMPro.TextMeshProUGUI levelNumberText;
 
@@ -50,5 +50,5 @@ public class LoadNextLevel : MonoBehaviour
     void Fadeout()
     {
         SceneAnimation.Active.StartScene();
-    }
+    }*/
 }
