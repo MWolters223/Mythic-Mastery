@@ -18,7 +18,6 @@ public class CameraFollowPlayerController : MonoBehaviour
 
     private void UpdateCamera(CameraModel cameraModel, CameraView cameraView)
     {
-        Debug.Log(cameraModel.Offset);
         if (cameraModel != null && cameraView != null)
         {
             Vector3 desiredPosition = cameraModel.Player.position + cameraModel.Offset;
