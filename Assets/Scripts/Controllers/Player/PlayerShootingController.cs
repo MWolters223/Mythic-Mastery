@@ -44,6 +44,7 @@ public class PlayerShootingController : MonoBehaviour
 
         Quaternion rotation = Quaternion.LookRotation(direction);
         Vector3 projectilePosition = view.StatueTransform.position + view.StatueTransform.forward * config.projectileRadius + new Vector3(0, config.shootingHeight, 0);
+        AudioManager.instance.PlaySFX("Scarabee afgevuurt");
         GameObject projectileObj = Instantiate(config.projectilePrefab, projectilePosition, rotation);
         ConfigureProjectile(projectileObj);
         return projectileObj;
