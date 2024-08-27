@@ -10,37 +10,37 @@ public class HoofdMenu : MonoBehaviour
     
     public void TerugNaarMenu()
     {
-        AnimationManager.Instance.loadNextScene(0);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(0);
     }
 
     public void SpelOpties()
     {
-        AnimationManager.Instance.loadNextScene(1);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(1);
     }
 
     public void StartSpelAnimatie()
     {
-        AnimationManager.Instance.loadNextScene(7);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(7);
     }
 
     public void SpelInstructies()
     {
-        AnimationManager.Instance.loadNextScene(2);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(2);
     }
 
     public void Credits()
     {
-        AnimationManager.Instance.loadNextScene(3);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(3);
     }
 
     public void SpelMenu()
     {
-        AnimationManager.Instance.loadNextScene(4);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(4);
     }
 
     public void Winkel()
     {
-        AnimationManager.Instance.loadNextScene(5);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(5);
     }
 
     public void Stoppen()
@@ -71,7 +71,7 @@ public class HoofdMenu : MonoBehaviour
     {
         AudioManager.instance.musicSource.Stop();
         AudioManager.instance.PlayMusic("Thema");
-        AnimationManager.Instance.loadNextScene(6);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(6);
     }
 
     public void HervatSpel()

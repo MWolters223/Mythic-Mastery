@@ -52,7 +52,7 @@ public class AudioManager : MonoBehaviour
 
         if (s == null)
         {
-            Debug.Log("sfx geluid niet gevonden");
+            Debug.Log("sfx geluid niet gevonden" + name);
         }
 
         else
