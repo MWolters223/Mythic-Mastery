@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class HoofdMenu : MonoBehaviour
 {
-    
     public void TerugNaarMenu()
     {
         SceneController.Instance.SceneTransitionController.LoadNextScene(0);
@@ -69,9 +68,10 @@ public class HoofdMenu : MonoBehaviour
 
     public void TerugNaarMenuVanuitSpel()
     {
+        Time.timeScale = 1; // Deur animatie werkt anders niet
         AudioManager.instance.musicSource.Stop();
         AudioManager.instance.PlayMusic("Thema");
-        SceneController.Instance.SceneTransitionController.LoadNextScene(6);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(0);
     }
 
     public void HervatSpel()
