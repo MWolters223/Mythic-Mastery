@@ -11,6 +11,8 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds, DriveSoundPlayer, DriveSoundAI;
     public AudioSource musicSource, sfxSource, DriveSourcePlayer, DriveSourceAI;
 
+    private string currentMusicName;
+
     private void Awake()
     {
         if (instance == null)
@@ -31,6 +33,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(string name)
     {
+
+        if (currentMusicName == name && musicSource.isPlaying)
+        {
+            return; // Music is already playing
+        }
+
         Sound s = Array.Find(musicSounds, x => x.name == name);
 
         if (s == null)
@@ -42,8 +50,23 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.clip = s.clip;
             musicSource.Play();
+            currentMusicName = name;
+        } 
+    }
+
+    public void StopMusic()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Stop();
+            currentMusicName = null;
         }
-        
+    }
+
+
+    public bool IsMusicPlaying(string musicName)
+    {
+        return currentMusicName == musicName && musicSource.isPlaying;
     }
 
     public void PlaySFX(string name)

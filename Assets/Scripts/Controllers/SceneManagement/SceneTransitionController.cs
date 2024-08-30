@@ -24,28 +24,28 @@ public class SceneTransitionController : MonoBehaviour
 
     private IEnumerator LoadNextSceneCoroutine(int sceneBuilderIndex)
     {
-        // Handle audio transition sounds for the scene
+        // Handle audio transition sounds and fade out current music
         HandleSceneTransitionSound(sceneBuilderIndex);
 
         // Perform scene loading based on scene type
         if (model.IsMenuScene(sceneBuilderIndex))   // Load menu
         {
             yield return StartCoroutine(sceneLoadingController.LoadSceneWithAnimation(sceneBuilderIndex));
+            PlayBackgroundMusic("Thema"); // Play menu music
         }
         else if (model.IsTransitionScene(sceneBuilderIndex)) // Transition to first level
         {
             yield return StartCoroutine(sceneLoadingController.LoadSceneWithTransition(model.TransistionSceneIndex, model.FirstLevelIndex));
-
-            AudioManager.instance.PlayMusic("Battle Muziek"); // Music in level
-            view.SetMusicTrigger("Muziek fade in");
+            PlayBackgroundMusic("Battle Muziek"); // Music in level
         }
         else if (model.IsLevelChange(sceneBuilderIndex)) // Level change animation 
         {
             yield return StartCoroutine(sceneLoadingController.LoadSceneWithTransition(model.TransistionSceneIndex, sceneBuilderIndex));
         }
-        else if (model.IsScoreBoard(sceneBuilderIndex)) // Change to score board
+        else if (model.IsScoreBoard(sceneBuilderIndex)) // Change to scoreboard
         {
-            yield return StartCoroutine(sceneLoadingController.LoadSceneWithAnimation(6));
+            StopBackgroundMusic();
+            yield return StartCoroutine(sceneLoadingController.LoadSceneWithAnimation(model.ScoreBoardIndex));
         }
         else
         {
@@ -60,5 +60,22 @@ public class SceneTransitionController : MonoBehaviour
             AudioManager.instance.PlaySFX("Knop klik");
             view.SetMusicTrigger("Muziek fade out");
         }
+    }
+
+    private void PlayBackgroundMusic(string musicTrack)
+    {
+        if (!AudioManager.instance.IsMusicPlaying(musicTrack))
+        {
+            AudioManager.instance.StopMusic();
+            view.SetMusicTrigger("Muziek fade in");
+            AudioManager.instance.PlayMusic(musicTrack);
+        }
+    }
+
+    private void StopBackgroundMusic()
+    {
+        // Trigger fade out and stop the music
+        view.SetMusicTrigger("Muziek fade out");
+        AudioManager.instance.StopMusic();
     }
 }
