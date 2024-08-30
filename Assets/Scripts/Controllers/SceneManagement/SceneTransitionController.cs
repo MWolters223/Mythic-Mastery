@@ -40,7 +40,9 @@ public class SceneTransitionController : MonoBehaviour
         }
         else if (model.IsLevelChange(sceneBuilderIndex)) // Level change animation 
         {
+            StopBackgroundMusic();
             yield return StartCoroutine(sceneLoadingController.LoadSceneWithTransition(model.TransistionSceneIndex, sceneBuilderIndex));
+            PlayBackgroundMusic("Battle Muziek"); // Music in level
         }
         else if (model.IsScoreBoard(sceneBuilderIndex)) // Change to scoreboard
         {
