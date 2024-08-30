@@ -23,36 +23,39 @@ public class SfinxController : MonoBehaviour
         shootAtPlayerController = gameObject.AddComponent<SfinxShootAtPlayerController>();
 
         aimAtPlayerController.Initialize(model, view);
-        shootAtPlayerController.Initialize(model, view); 
+        shootAtPlayerController.Initialize(model, view);
+
+        EnemyManagerController.Instance.EnemyManagerRegistrationController.RegisterEnemy();
     }
-        void Update()
+
+    void Update()
+    {
+        model.Player = GameObject.FindGameObjectWithTag("Player");
+
+        if (model.Player != null)
         {
-            model.Player = GameObject.FindGameObjectWithTag("Player");
-
-            if (model.Player != null)
+            if (view.ObjectWithTagInView("Player"))
             {
-                if (view.ObjectWithTagInView("Player"))
-                {
-                    aimAtPlayerController.AimAtPlayer();
+                aimAtPlayerController.AimAtPlayer();
 
-                    if (model.cooldownTimer > 0)
-                    {
-                        model.cooldownTimer -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        if (!view.ObjectWithTagInView("Enemy"))
-                        {
-                            shootAtPlayerController.ShootProjectile();
-                            AudioManager.instance.PlaySFX("Scarabee afgevuurt");
-                        }
-                        model.cooldownTimer = config.shootingCooldown;
-                    }
+                if (model.cooldownTimer > 0)
+                {
+                    model.cooldownTimer -= Time.deltaTime;
                 }
                 else
                 {
-                    view.RotateStatue(model.StatueTransform, config.idleRotationSpeed);
+                    if (!view.ObjectWithTagInView("Enemy"))
+                    {
+                        shootAtPlayerController.ShootProjectile();
+                        AudioManager.instance.PlaySFX("Scarabee afgevuurt");
+                    }
+                    model.cooldownTimer = config.shootingCooldown;
                 }
             }
-    }
+            else
+            {
+                view.RotateStatue(model.StatueTransform, config.idleRotationSpeed);
+            }
+        }
+}
 }

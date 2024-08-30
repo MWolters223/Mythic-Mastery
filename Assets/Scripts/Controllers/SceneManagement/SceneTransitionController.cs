@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class SceneTransitionController : MonoBehaviour
 {
@@ -38,9 +39,13 @@ public class SceneTransitionController : MonoBehaviour
             AudioManager.instance.PlayMusic("Battle Muziek"); // Music in level
             view.SetMusicTrigger("Muziek fade in");
         }
-        else if (model.IsLevelChange(sceneBuilderIndex)) // Level change animation
+        else if (model.IsLevelChange(sceneBuilderIndex)) // Level change animation 
         {
             yield return StartCoroutine(sceneLoadingController.LoadSceneWithTransition(model.TransistionSceneIndex, sceneBuilderIndex));
+        }
+        else if (model.IsScoreBoard(sceneBuilderIndex)) // Change to score board
+        {
+            yield return StartCoroutine(sceneLoadingController.LoadSceneWithAnimation(6));
         }
         else
         {

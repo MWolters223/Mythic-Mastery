@@ -71,7 +71,7 @@ public class HoofdMenu : MonoBehaviour
         Time.timeScale = 1; // Deur animatie werkt anders niet
         AudioManager.instance.musicSource.Stop();
         AudioManager.instance.PlayMusic("Thema");
-        SceneController.Instance.SceneTransitionController.LoadNextScene(0);
+        SceneController.Instance.SceneTransitionController.LoadNextScene(6);
     }
 
     public void HervatSpel()

@@ -25,5 +25,7 @@ public class ScarabeePlayerCollisionController : MonoBehaviour
         {
             Destroy(laser);
         }
+
+        SceneController.Instance.SceneTransitionController.LoadNextScene(6);
     }
 }

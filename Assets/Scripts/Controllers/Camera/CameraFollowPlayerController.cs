@@ -18,7 +18,7 @@ public class CameraFollowPlayerController : MonoBehaviour
 
     private void UpdateCamera(CameraModel cameraModel, CameraView cameraView)
     {
-        if (cameraModel != null && cameraView != null)
+        if (cameraModel != null && cameraView != null && cameraModel.Player != null)
         {
             Vector3 desiredPosition = cameraModel.Player.position + cameraModel.Offset;
             Vector3 smoothedPosition = Vector3.Lerp(cameraModel.Camera.transform.position, desiredPosition, cameraModel.SmoothSpeed);

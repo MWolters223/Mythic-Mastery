@@ -26,6 +26,8 @@ public class ScarabeeEnemyCollisionController : MonoBehaviour
         scoreController.AddPoints(points);
         destructionController.DestroyObject(enemy);
         destructionController.DestroyProjectile(gameObject);
+
+        EnemyManagerController.Instance.EnemyManagerRegistrationController.UnregisterEnemy();
     }
 
     private int DeterminePointsForEnemy(string enemyName)

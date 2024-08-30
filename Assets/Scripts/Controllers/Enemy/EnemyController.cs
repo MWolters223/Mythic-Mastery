@@ -32,6 +32,8 @@ public class EnemyController : MonoBehaviour
         collisionController.Initialize(model, view);
         followPlayerController.Initialize(model, view); 
         shootAtPlayerController.Initialize(model, view);
+
+        EnemyManagerController.Instance.EnemyManagerRegistrationController.RegisterEnemy();
     }
 
     void Update()
