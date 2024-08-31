@@ -1,6 +1,10 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using System.Collections;
+using TMPro;
+using UnityEngine.UI;
+using System.Text.RegularExpressions;
+using System;
 
 public class SceneLoadingController : MonoBehaviour
 {
@@ -22,13 +26,46 @@ public class SceneLoadingController : MonoBehaviour
 
     public IEnumerator LoadSceneWithTransition(int transitionSceneIndex, int targetSceneIndex)
     {
+        string currentLevel = SceneManager.GetActiveScene().name;
+
         yield return StartCoroutine(sceneAnimationController.CloseDoorAnimation());
         yield return StartCoroutine(LoadAsync(transitionSceneIndex));
+
+        IncrementLevelNumberText(currentLevel);
+
         yield return StartCoroutine(sceneAnimationController.OpenDoorAnimation());
         yield return new WaitForSeconds(5f);
         yield return StartCoroutine(sceneAnimationController.CloseDoorAnimation());
         yield return StartCoroutine(LoadAsync(targetSceneIndex));
         yield return StartCoroutine(sceneAnimationController.OpenDoorAnimation());
+    }
+
+    private void IncrementLevelNumberText(string currentLevel)
+    {
+        int levelNumber = 0; // Default to 0 if no number is found
+
+        // Use regex to find a number in the scene name and parse it
+        Match match = Regex.Match(currentLevel, @"\d+");
+        if (match.Success)
+        {
+            levelNumber = int.Parse(match.Value);
+        }
+
+        int incrementedLevelNumber = levelNumber + 1;
+
+        GameObject levelNumberObject = GameObject.Find("LevelNumber");
+        if (levelNumberObject != null)
+        {
+            Text textComponent = levelNumberObject.GetComponent<Text>();
+            if (textComponent != null)
+            {
+                textComponent.text = incrementedLevelNumber.ToString();
+            }
+            else if (levelNumberObject.GetComponent<TextMeshProUGUI>() is TextMeshProUGUI tmpComponent)
+            {
+                tmpComponent.text = incrementedLevelNumber.ToString();
+            }
+        }
     }
 
     public IEnumerator LoadAsync(int levelIndex)
