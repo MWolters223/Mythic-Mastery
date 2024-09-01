@@ -43,7 +43,15 @@ public class EnemyManagerRegistrationController : MonoBehaviour
         if (model.AreAllEnemiesDefeated())
         {
             int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            SceneController.Instance.SceneTransitionController.LoadNextScene(nextLevelIndex);
+
+            if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+            {
+                SceneController.Instance.SceneTransitionController.LoadNextScene(nextLevelIndex);
+            }
+            else
+            {
+                SceneController.Instance.SceneTransitionController.LoadNextScene(6);
+            }
         }
     }
 }
