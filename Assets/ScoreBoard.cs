@@ -12,8 +12,6 @@ public class ScoreBoard : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Score scene loaded");
-        //SceneAnimation.Active.StartScene();
         if (PlayerPrefs.HasKey("Score: "))
         {
             score = PlayerPrefs.GetInt("Score: ");
