@@ -18,7 +18,7 @@ public class ScarabeePlayerCollisionController : MonoBehaviour
     {
         destructionController.DestroyObject(player);
         destructionController.DestroyProjectile(gameObject);
-        AudioManager.instance.PlaySFX("Standbeeld neer");
+        SoundController.Instance.SoundSFXController.PlaySFX("Standbeeld neer");
 
         GameObject laser = GameObject.Find("Line");
         if (laser != null)

@@ -59,18 +59,18 @@ public class SceneTransitionController : MonoBehaviour
     {
         if (model.IsTransitionScene(sceneBuilderIndex) || model.IsLevelChange(sceneBuilderIndex))
         {
-            AudioManager.instance.PlaySFX("Knop klik");
+            SoundController.Instance.SoundSFXController.PlaySFX("Knop klik");
             view.SetMusicTrigger("Muziek fade out");
         }
     }
 
     private void PlayBackgroundMusic(string musicTrack)
     {
-        if (!AudioManager.instance.IsMusicPlaying(musicTrack))
+        if (!SoundController.Instance.SoundMusicController.IsMusicPlaying(musicTrack))
         {
-            AudioManager.instance.StopMusic();
+            SoundController.Instance.SoundMusicController.StopMusic();
             view.SetMusicTrigger("Muziek fade in");
-            AudioManager.instance.PlayMusic(musicTrack);
+            SoundController.Instance.SoundMusicController.PlayMusic(musicTrack);
         }
     }
 
@@ -78,6 +78,6 @@ public class SceneTransitionController : MonoBehaviour
     {
         // Trigger fade out and stop the music
         view.SetMusicTrigger("Muziek fade out");
-        AudioManager.instance.StopMusic();
+        SoundController.Instance.SoundMusicController.StopMusic();
     }
 }

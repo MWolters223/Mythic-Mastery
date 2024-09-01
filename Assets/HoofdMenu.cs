@@ -55,7 +55,7 @@ public class HoofdMenu : MonoBehaviour
 
     public void Stoppen()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
+        SoundController.Instance.SoundSFXController.PlaySFX("Knop klik");
         Application.Quit();
     }
 
@@ -102,14 +102,14 @@ public class HoofdMenu : MonoBehaviour
     public void TerugNaarMenuVanuitSpel()
     {
         Time.timeScale = 1; // Reset time scale deur animatie
-        AudioManager.instance.musicSource.Stop();
-        AudioManager.instance.PlayMusic("Thema");
+        SoundController.Instance.View.musicSource.Stop();
+        SoundController.Instance.SoundMusicController.PlayMusic("Thema");
         SceneController.Instance.SceneTransitionController.LoadNextScene(6);
     }
 
     public void HervatSpel()
     {
-        AudioManager.instance.PlaySFX("Knop klik");
+        SoundController.Instance.SoundSFXController.PlaySFX("Knop klik");
         PauzeMenu.SetActive(false);
         EnablePlayerScripts(); 
         Time.timeScale = 1; // Reset time scale

@@ -64,13 +64,13 @@ public class ScarabeeCollisionController : MonoBehaviour
     {
         if (model.reflectCount >= model.maxReflectCount)
         {
-            AudioManager.instance.PlaySFX("Scarabee raakt muur");
+            SoundController.Instance.SoundSFXController.PlaySFX("Scarabee raakt muur");
             destructionController.DestroyProjectile(gameObject);
         }
         else
         {
             model.reflectCount++;
-            AudioManager.instance.PlaySFX("Scarabee raakt muur");
+            SoundController.Instance.SoundSFXController.PlaySFX("Scarabee raakt muur");
 
             movementController.ReflectMovement(collision);
             scarabeeDebug.traveledPathPoints.Add(transform.position);

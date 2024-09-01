@@ -47,7 +47,7 @@ public class SfinxController : MonoBehaviour
                     if (!view.ObjectWithTagInView("Enemy"))
                     {
                         shootAtPlayerController.ShootProjectile();
-                        AudioManager.instance.PlaySFX("Scarabee afgevuurt");
+                        SoundController.Instance.SoundSFXController.PlaySFX("Scarabee afgevuurt");
                     }
                     model.cooldownTimer = config.shootingCooldown;
                 }
